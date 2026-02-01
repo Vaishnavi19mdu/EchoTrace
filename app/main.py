@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
 
 app = FastAPI(
-    title="projwhitehat Voice Analysis API",
+    title="EchoTrace Voice Analysis API",
     version="1.0.0",
     description="Backend service for detecting Human vs AI-generated voices"
 )
@@ -23,7 +23,7 @@ app.include_router(router)
 @app.get("/")
 def root():
     return {
-        "message": "projwhitehat Voice Analysis API",
+        "message": "EchoTrace Voice Analysis API",
         "version": "1.0.0",
         "endpoints": {
             "/analyze": "POST - Analyze voice audio",
