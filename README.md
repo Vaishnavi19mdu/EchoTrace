@@ -1,4 +1,4 @@
-# projwhitehat
+# EchoTrace
 
 Backend service for detecting Human vs AI-generated voices.
 
