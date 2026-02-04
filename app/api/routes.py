@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
-from app.models import VoiceAnalysisRequest, VoiceAnalysisResponse, ErrorResponse
-from app.services.gemini_service import gemini_service, SUPPORTED_LANGUAGES
+from app.models import VoiceAnalysisRequest, VoiceAnalysisResponse
+from app.services.integrated_service import integrated_service
 from app.config import settings
 
 router = APIRouter()
+
+SUPPORTED_LANGUAGES = ["Tamil", "English", "Hindi", "Malayalam", "Telugu"]
 
 @router.post("/api/voice-detection", response_model=VoiceAnalysisResponse)
 async def voice_detection(
@@ -12,8 +14,8 @@ async def voice_detection(
     body: VoiceAnalysisRequest
 ):
     """
-    Analyze voice audio for AI_GENERATED vs HUMAN classification.
-    Requires valid API key in x-api-key header.
+    Integrated EchoTrace Detection
+    Person 2 (audio) → Person 1 (classification) → Person 3 (API)
     """
     # Validate API key
     api_key = request.headers.get("x-api-key")
@@ -36,7 +38,7 @@ async def voice_detection(
             }
         )
 
-    # Validate audio format is mp3
+    # Validate audio format
     if body.audioFormat.lower() != "mp3":
         return JSONResponse(
             status_code=400,
@@ -46,7 +48,7 @@ async def voice_detection(
             }
         )
 
-    # Validate audioBase64 is not empty
+    # Validate audioBase64 not empty
     if not body.audioBase64 or len(body.audioBase64.strip()) == 0:
         return JSONResponse(
             status_code=400,
@@ -56,10 +58,11 @@ async def voice_detection(
             }
         )
 
-    # Call Gemini service
-    result = gemini_service.analyze_audio(
+    # Call integrated service (Person 2 → Person 1)
+    result = integrated_service.analyze_audio_integrated(
         audio_base64=body.audioBase64,
-        language=body.language
+        language=body.language,
+        audio_format=body.audioFormat
     )
 
     return VoiceAnalysisResponse(**result)

@@ -3,7 +3,7 @@ import base64
 
 # Your API configuration
 API_URL = "http://localhost:8000/analyze"
-API_KEY = "idkyoutellme"  # REPLACE THIS with your actual API_KEY from .env
+API_KEY = "cassiopieavoxp3"  # REPLACE THIS with your actual API_KEY from .env
 
 # Create a tiny mock audio file (just for testing the API flow)
 # This is a minimal WAV file header + silence
